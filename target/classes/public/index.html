@@ -41,12 +41,11 @@
 </div>
 
 <script>
-    var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chat/");
+    var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chat");
     var name = "";
-    webSocket.onmessage = function (msg) { receiveMsg(JSON.parse(msg.data)) } //msg.data is the data from the ws api
+    webSocket.onmessage = function (msg) { receiveMsg(JSON.parse(msg.data)) }
     webSocket.onclose = function () { alert("Server Disconnect You"); }
     webSocket.onopen = function() {
-        //var name = "";
         while(name == "") {
             name = prompt("Enter your name");
             sendMessage("join", name)
@@ -56,16 +55,16 @@
 
     $("#send").click(function () {
         sendMessage("say", $("#msg").val());
-    }); //se qualcuno preme il bottone con id send
+    });
     $("#msg").keypress(function(e) {
-        if(e.which == 13) sendMessage("say", e.target.value); //se il bottone premuto è "enter"
+        if(e.which == 13) sendMessage("say", e.target.value);
     });
 
     function sendMessage(type, data) {
         if (data !== "") {
             webSocket.send(JSON.stringify({type: type, data: data}));
-            $("#msg").val(""); //svuota il campo di testo con id msg
-            $("#msg").focus(); //mette il focus sul campo di testo con id msg
+            $("#msg").val("");
+            $("#msg").focus();
         }
     }
 
@@ -81,7 +80,7 @@
         } else if(msg.msgType == "users") {
             msg.data.forEach(function (el) {
                 addUser(el);
-            }) //msg.data è una lista di users
+            })
         } else if (msg.msgType == "left") {
             $("#user-" +  msg.data.id).remove();
         }
@@ -90,9 +89,6 @@
     function addUser(user){
         $("#userlist").append("<li id='user-"+user.id+"'>"+user.name+"</li>");
     }
-
-    //funzione per chiudere la connessione dopo X secondi
-    //window.setTimeout(function() { webSocket.close()}, 5000);
 
 </script>
 

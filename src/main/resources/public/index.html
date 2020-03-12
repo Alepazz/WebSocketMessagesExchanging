@@ -41,7 +41,7 @@
 </div>
 
 <script>
-    var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chat/");
+    var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chat");
     var name = "";
     webSocket.onmessage = function (msg) { receiveMsg(JSON.parse(msg.data)) }
     webSocket.onclose = function () { alert("Server Disconnect You"); }
